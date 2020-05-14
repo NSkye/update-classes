@@ -1,0 +1,35 @@
+{
+  "name": "update-classes",
+  "version": "1.0.0",
+  "description": "A simple JavaScript utility for updating HTML-element's classlist",
+  "main": "src/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^26.0.1"
+  },
+  "scripts": {
+    "test": "jest --testPathPattern /test/.*\\.spec\\.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NSkye/update-classes.git"
+  },
+  "keywords": [
+    "css",
+    "classes",
+    "classlist",
+    "classname",
+    "classnames",
+    "util",
+    "utility"
+  ],
+  "author": "Nikolai Laevskii",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/NSkye/update-classes/issues"
+  },
+  "homepage": "https://github.com/NSkye/update-classes#readme"
+}
