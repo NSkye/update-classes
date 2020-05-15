@@ -2,15 +2,24 @@
   "name": "update-classes",
   "version": "1.0.0",
   "description": "A simple JavaScript utility for updating HTML-element's classlist",
-  "main": "src/index.js",
+  "main": "dist/update-classes.min.js",
   "directories": {
     "test": "test"
   },
   "dependencies": {},
   "devDependencies": {
-    "jest": "^26.0.1"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "babel-loader": "^8.1.0",
+    "jest": "^26.0.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   },
   "scripts": {
+    "build": "npm run build:prod && npm run build:dev",
+    "build:prod": "NODE_ENV=production webpack",
+    "build:dev": "NODE_ENV=development webpack",
     "test": "jest --testPathPattern /test/.*\\.spec\\.js"
   },
   "repository": {
