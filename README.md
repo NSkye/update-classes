@@ -6,8 +6,11 @@ A small wrapper built around `Element.classList` with support of multiple DOM-el
 ## Table of contents
 1. [Installation](#installation)
 2. [Description](#description)
-3. [Usage](#usage)
-4. [License](#license)
+3. [When I should use it?](#when-to-use)
+4. [Usage](#usage)
+5. [Browser support](#browser-support)
+6. [Planned updates](#planned-updates)
+7. [License](#license)
 
 <a id="installation"></a>
 ## Installation
@@ -37,6 +40,11 @@ updateClasses([ element1, element2 ], {
   selected: false
 })
 ```
+<a id="when-to-use"></a>
+## When should I use it?
+When you are working on a small to medium scale project developed mostly with Vanilla JavaScript, or when you just playing in sandbox and don't want deal with complex UI frameworks and libraries. updateClasses also works great when combined with [Stimulus](https://github.com/stimulusjs/stimulus)
+### Can I use it with React?
+While you certainly can make it work with React using React's ref API, you probably should avoid such practice. React was designed for rendering data to the DOM, which means it has all this functionality by default. If you want more convenient conditional rendering of css-classes in React, [classnames](https://github.com/JedWatson/classnames) utility is exactly what you need
 
 <a id="usage"></a>
 ## Usage
@@ -124,6 +132,30 @@ updateClasses(target, 'fade-out-animation')
 ```
 *Note: Don't use these methods for excessevly long animations as some browsers kill animation and transition sequences when user switches to another tab which will make `animationend` and `transitionend` events to never appear and listeners applied by these methods will continiously and pointlessly wait for them producing memeory leaks. Also don't interrupt animations with properties that cause repaint of elements (such as `display: none`) as this doesn't produce corresponding events and leads to same problem.  
 Basically treat these methods as a shorthand for manually applying `animationend` and `transitionend` event listeners.*
+
+<a id="browser-support"></a>
+## Browser support
+### Full support of class updates
+- Edge 12+
+- Firefox 3.6+
+- Chrome 8+
+- Safari 5.1+
+- Opera 11.5+
+- iOS Safari/Chrome 5+
+- Opera Mini
+
+### Partial support of class updates
+- Internet Explorer 10+ (does not support class replacement)  
+  
+Might work on older browsers with classList polyfill.
+
+### Support of `.afterAnimation()` and `.afterTransition()` methods
+Depends on browser's support of [`animationend`](https://caniuse.com/#search=animationend) and [`transitionend`](https://caniuse.com/#search=transitionend) events.
+
+<a id="planned-updates"></a>
+## Planned updates
+- BEM-friendly API
+- Class toggling
 
 <a id="license"></a>
 ## License
