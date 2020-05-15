@@ -1,6 +1,6 @@
 {
   "name": "update-classes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple JavaScript utility for updating HTML-element's classlist",
   "main": "dist/update-classes.min.js",
   "directories": {
