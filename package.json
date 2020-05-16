@@ -20,7 +20,8 @@
     "build": "npm run build:prod && npm run build:dev",
     "build:prod": "NODE_ENV=production webpack",
     "build:dev": "NODE_ENV=development webpack",
-    "test": "jest --testPathPattern /test/.*\\.spec\\.js"
+    "test": "jest --testPathPattern /test/.*\\.spec\\.js",
+    "test:coverage": "jest --testPathPattern /test/.*\\.spec\\.js --collectCoverage=true"
   },
   "repository": {
     "type": "git",
