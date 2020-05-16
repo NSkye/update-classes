@@ -1,5 +1,7 @@
 # update-classes
 A simple JavaScript utility for updating DOM-element's classlist  
+
+[![NSkye](https://circleci.com/gh/nskye/update-classes.svg?style=svg)](https://circleci.com/gh/NSkye/update-classes)
   
 A small wrapper built around `Element.classList` with support of multiple DOM-elements, conditional class application, several ways to specify updated classes, calls chaining and more  
 
