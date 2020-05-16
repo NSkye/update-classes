@@ -1,4 +1,6 @@
 # update-classes
+[![CircleCI](https://circleci.com/gh/NSkye/update-classes.svg?style=shield)](https://circleci.com/gh/NSkye/update-classes) ![npm](https://img.shields.io/npm/v/update-classes) ![npm bundle size](https://img.shields.io/bundlephobia/min/update-classes)
+
 A simple JavaScript utility for updating DOM-element's classlist  
   
 A small wrapper built around `Element.classList` with support of multiple DOM-elements, conditional class application, several ways to specify updated classes, calls chaining and more  
