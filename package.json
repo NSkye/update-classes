@@ -3,6 +3,7 @@
   "version": "1.0.3",
   "description": "A simple JavaScript utility for updating HTML-element's classlist",
   "main": "dist/update-classes.min.js",
+  "types": "src/index.d.ts",
   "directories": {
     "test": "test"
   },
