@@ -189,6 +189,43 @@ describe('Call chaining', () => {
   })
 })
 
+describe('Advanced chaining', () => {
+  test('Scopes & prefixes', () => {
+    const updateFoo = updateClasses
+      .scope('foo__')
+
+    const updateFooBar = updateFoo
+      .scope('bar--')
+
+    updateFoo(mockHTMLElement, 'c7')
+    expect(mockHTMLElement.classList).toContain('foo__c7')
+
+    updateFooBar(mockHTMLElement, 'c8')
+    expect(mockHTMLElement.classList).toContain('foo__bar--c8')
+
+    updateFoo(mockHTMLElement, 'c9')
+    expect(mockHTMLElement.classList).toContain('foo__c9')
+  })
+
+  test('Targets & classes', () => {
+    const updateMockElement = updateClasses
+      .target(mockHTMLElement)
+    updateMockElement(null, 'c7')
+    expect(mockHTMLElement.classList).toContain('c7')
+
+    const updateMockElementC7 = updateMockElement
+      .classes('~c7')
+    updateMockElementC7()
+    expect(mockHTMLElement.classList).not.toContain('c7')
+    updateMockElementC7()
+    expect(mockHTMLElement.classList).toContain('c7')
+
+    updateMockElement(null, 'c8')
+    expect(mockHTMLElement.classList).toContain('c7')
+    expect(mockHTMLElement.classList).toContain('c8')
+  })
+})
+
 describe('Animation and transition handling', () => {
   test('"afterAnimation" method', done => {
     updateClasses(mockHTMLElement, 'some-animation-class')
