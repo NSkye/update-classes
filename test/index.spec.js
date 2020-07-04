@@ -121,12 +121,21 @@ describe('Update classes with a string notation', () => {
     classesToRemove.forEach(expect(mockHTMLElement.classList).not.toContain)
   })
 
+  test('Toggle single class', () => {
+    const classesToRemove = ['c1', 'c2', 'c3']
+    const classesToAdd = ['c7']
+
+    updateClasses(mockHTMLElement, '~c1 ~c2 ~c3 ~c7')
+    classesToRemove.forEach(expect(mockHTMLElement.classList).not.toContain)
+    classesToAdd.forEach(expect(mockHTMLElement.classList).toContain)
+  })
+
   test('Update classes on multiple elements', () => {
     const classesToRemove = ['c1', 'c2', 'c3', 'c4']
     const classesToAdd = ['c7', 'c8']
     const classesToRemainUntouched = ['c5', 'c6']
 
-    updateClasses([mockHTMLElement1, mockHTMLElement2], '!c1 !c2 !c3 !c4 c7 c8')
+    updateClasses([mockHTMLElement1, mockHTMLElement2], '!c1 !c2 ~c3 ~c4 c7 c8')
 
     classesToRemove.forEach(expect(mockHTMLElement1.classList).not.toContain)
     classesToRemove.forEach(expect(mockHTMLElement2.classList).not.toContain)
