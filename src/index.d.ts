@@ -31,8 +31,8 @@ interface IOptions {
 
 interface IUpdateClasses {
   (
-    targets: ITargetsToUpdate,
-    classes: ClassesToUpdate.IAnyNotation
+    targets?: ITargetsToUpdate,
+    classes?: ClassesToUpdate.IAnyNotation
   ): IUpdateClassesReturn;
 
   scope: (scopeName: string) => IUpdateClasses;
@@ -41,4 +41,6 @@ interface IUpdateClasses {
   __extractOptions: () => IOptions;
 }
 
-export default IUpdateClasses
+declare const updateClasses: IUpdateClasses
+
+export default updateClasses
