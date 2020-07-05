@@ -1,32 +1,46 @@
-type TargetsToUpdate = Element | Element[]
+type ITargetsToUpdate = Element | Element[]
 
 declare namespace ClassesToUpdate {
-  export interface objectNotation {
+  export interface IObjectNotation {
     [classToUpdate: string]: boolean | string
   }
-  export type stringNotation = string
-  export type arrayNotation = Array<objectNotation | stringNotation | arrayNotation>
-  export type anyNotation = objectNotation | stringNotation | arrayNotation
+  export type IStringNotation = string
+  export type IArrayNotation = Array<IObjectNotation | IStringNotation | IArrayNotation>
+  export type IAnyNotation = IObjectNotation | IStringNotation | IArrayNotation
+}
+
+interface IUpdateClassesReturn {
+  and: IUpdateClasses;
+  also: IUpdateClasses;
+  afterTransition: (
+    classes: ClassesToUpdate.IAnyNotation
+  ) => IUpdateClassesReturn,
+  afterAnimation: (
+    classes: ClassesToUpdate.IAnyNotation
+  ) => IUpdateClassesReturn
+}
+
+interface IOptions {
+  scope: string;
+  ensureTargets: Element[];
+  ensureClasses: Array<
+    ClassesToUpdate.IStringNotation |
+    ClassesToUpdate.IObjectNotation
+  >
 }
 
 interface IUpdateClasses {
-  and: (
-    targets: TargetsToUpdate,
-    classes: ClassesToUpdate.anyNotation
-  ) => IUpdateClasses,
-  also: (
-    targets: TargetsToUpdate,
-    classes: ClassesToUpdate.anyNotation
-  ) => IUpdateClasses,
-  afterTransition: (
-    classes: ClassesToUpdate.anyNotation
-  ) => IUpdateClasses,
-  afterAnimation: (
-    classes: ClassesToUpdate.anyNotation
-  ) => IUpdateClasses
+  (
+    targets?: ITargetsToUpdate,
+    classes?: ClassesToUpdate.IAnyNotation
+  ): IUpdateClassesReturn;
+
+  scope: (scopeName: string) => IUpdateClasses;
+  target: (target: ITargetsToUpdate) => IUpdateClasses;
+  classes: (classes: ClassesToUpdate.IAnyNotation) => IUpdateClasses;
+  __extractOptions: () => IOptions;
 }
 
-export default function updateClasses(
-  targets: TargetsToUpdate,
-  classes: ClassesToUpdate.anyNotation
-): IUpdateClasses
+declare const updateClasses: IUpdateClasses
+
+export default updateClasses

@@ -121,12 +121,21 @@ describe('Update classes with a string notation', () => {
     classesToRemove.forEach(expect(mockHTMLElement.classList).not.toContain)
   })
 
+  test('Toggle single class', () => {
+    const classesToRemove = ['c1', 'c2', 'c3']
+    const classesToAdd = ['c7']
+
+    updateClasses(mockHTMLElement, '~c1 ~c2 ~c3 ~c7')
+    classesToRemove.forEach(expect(mockHTMLElement.classList).not.toContain)
+    classesToAdd.forEach(expect(mockHTMLElement.classList).toContain)
+  })
+
   test('Update classes on multiple elements', () => {
     const classesToRemove = ['c1', 'c2', 'c3', 'c4']
     const classesToAdd = ['c7', 'c8']
     const classesToRemainUntouched = ['c5', 'c6']
 
-    updateClasses([mockHTMLElement1, mockHTMLElement2], '!c1 !c2 !c3 !c4 c7 c8')
+    updateClasses([mockHTMLElement1, mockHTMLElement2], '!c1 !c2 ~c3 ~c4 c7 c8')
 
     classesToRemove.forEach(expect(mockHTMLElement1.classList).not.toContain)
     classesToRemove.forEach(expect(mockHTMLElement2.classList).not.toContain)
@@ -180,6 +189,68 @@ describe('Call chaining', () => {
   })
 })
 
+describe('Advanced chaining', () => {
+  test('Scopes & prefixes', () => {
+    const updateFoo = updateClasses
+      .scope('foo__')
+
+    const updateFooBar = updateFoo
+      .scope('bar--')
+
+    updateFoo(mockHTMLElement, 'c7')
+    expect(mockHTMLElement.classList).toContain('foo__c7')
+
+    updateFooBar(mockHTMLElement, 'c8')
+    expect(mockHTMLElement.classList).toContain('foo__bar--c8')
+
+    updateFoo(mockHTMLElement, 'c9')
+    expect(mockHTMLElement.classList).toContain('foo__c9')
+  })
+
+  test('Targets & classes', () => {
+    const updateMockElement = updateClasses
+      .target(mockHTMLElement)
+    updateMockElement(null, 'c7')
+    expect(mockHTMLElement.classList).toContain('c7')
+
+    const updateMockElementC7 = updateMockElement
+      .classes('~c7')
+    updateMockElementC7()
+    expect(mockHTMLElement.classList).not.toContain('c7')
+    updateMockElementC7()
+    expect(mockHTMLElement.classList).toContain('c7')
+
+    updateMockElement(null, 'c8')
+    expect(mockHTMLElement.classList).toContain('c7')
+    expect(mockHTMLElement.classList).toContain('c8')
+  })
+
+  test('With call chaining', () => {
+    updateClasses(mockHTMLElement, 'my-block')
+    const myBlockScope = updateClasses.scope('my-block')
+    const updateMyBlockModifier = myBlockScope.scope('--')
+
+    updateMyBlockModifier(mockHTMLElement, 'foo')
+      .also(mockHTMLElement, 'bar')
+
+    expect(mockHTMLElement.classList).toContain('my-block')
+    expect(mockHTMLElement.classList).toContain('my-block--foo')
+    expect(mockHTMLElement.classList).toContain('my-block--bar')
+
+    const updateMyCertainBlockModifier = updateMyBlockModifier
+      .target(mockHTMLElement1)
+      .classes('active')
+
+    updateMyCertainBlockModifier()
+      .also(null, 'foo')
+      .also(null, 'bar')
+
+    expect(mockHTMLElement1.classList).toContain('my-block--active')
+    expect(mockHTMLElement1.classList).toContain('my-block--foo')
+    expect(mockHTMLElement1.classList).toContain('my-block--bar')
+  })
+})
+
 describe('Animation and transition handling', () => {
   test('"afterAnimation" method', done => {
     updateClasses(mockHTMLElement, 'some-animation-class')
@@ -205,6 +276,25 @@ describe('Animation and transition handling', () => {
 
     mockHTMLElement.addEventListener('transitionend', () => {
       expect(mockHTMLElement.classList).not.toContain('some-transition-class')
+      done()
+    })
+  })
+
+  test('With advanced chaining', done => {
+    const example = updateClasses
+      .scope('scope--')
+      .target(mockHTMLElement)
+      .classes('dummy')
+
+    example()
+      .afterAnimation('foo')
+
+    setTimeout(() => mockHTMLElement.dispatchEvent(new Event('animationend')), 0)
+
+    expect(mockHTMLElement.classList).toContain('scope--dummy')
+
+    mockHTMLElement.addEventListener('animationend', () => {
+      expect(mockHTMLElement.classList).toContain('scope--foo')
       done()
     })
   })
