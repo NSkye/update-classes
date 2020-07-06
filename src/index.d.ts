@@ -38,6 +38,7 @@ interface IUpdateClasses {
   scope: (scopeName: string) => IUpdateClasses;
   target: (target: ITargetsToUpdate) => IUpdateClasses;
   classes: (classes: ClassesToUpdate.IAnyNotation) => IUpdateClasses;
+  __extractOriginal: () => (targets: ITargetsToUpdate, classes: ClassesToUpdate.IAnyNotation) => void;
   __extractOptions: () => IOptions;
 }
 

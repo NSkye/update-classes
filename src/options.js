@@ -1,4 +1,3 @@
-const { updateClasses } = require('./update-classes')
 const convertStringNotationToObject = require('./convert-string-notation-to-object')
 const ensureArray = require('./utils/ensure-array')
 const flatten = require('./utils/flatten')
@@ -51,7 +50,7 @@ const copyOptions = (options) => ({
 })
 
 
-function afterEvent(eventName, targets, classes) {
+function afterEvent(eventName, targets, classes, updateClasses) {
   targets = ensureArray(targets)
 
   const updateOnEvent = ({ target }) => {
@@ -62,17 +61,13 @@ function afterEvent(eventName, targets, classes) {
   targets.forEach(target => target.addEventListener(eventName, updateOnEvent))
 }
 
-function afterTransition(targets, classes) {
-  return afterEvent('transitionend', targets, classes)
-}
+const withOptions = (updateClassesFunction, options) => {
+  const originalUpdateClassesFunction = updateClassesFunction.__extractOriginal
+    ? updateClassesFunction.__extractOriginal()
+    : updateClassesFunction
 
-function afterAnimation(targets, classes) {
-  return afterEvent('animationend', targets, classes)
-}
-
-const withOptions = (uc, options) => {
-  options = uc.__extractOptions
-    ? mergeOptions(uc.__extractOptions(), options)
+  options = updateClassesFunction.__extractOptions
+    ? mergeOptions(updateClassesFunction.__extractOptions(), options)
     : options
 
   const result = (targets, classes) => {
@@ -88,23 +83,24 @@ const withOptions = (uc, options) => {
       options.scope
     )
 
-    updateClasses(targets, classes)
+    originalUpdateClassesFunction(targets, classes)
     return {
       and: result,
       also: result,
-      afterTransition: classes => afterTransition(targets, processClasses(
+      afterTransition: classes => afterEvent('transitionend', targets, processClasses(
         classes,
         options.ensureClasses,
         options.scope
-      )),
-      afterAnimation: classes => afterAnimation(targets, processClasses(
+      ), originalUpdateClassesFunction),
+      afterAnimation: classes => afterEvent('animationend', targets, processClasses(
         classes,
         options.ensureClasses,
         options.scope
-      ))
+      ), originalUpdateClassesFunction)
     }
   }
 
+  result.__extractOriginal = () => originalUpdateClassesFunction
   result.__extractOptions = () => copyOptions(options)
 
   result.scope = (scopeName) => {
