@@ -1,4 +1,4 @@
-import { convertStringNotationToObject, flatten } from '../utils';
+import { convertStringNotationToObject, flatten, ensureArray } from '../utils';
 
 export const copyClasses = classes => (
   typeof classes === 'object'
@@ -15,7 +15,7 @@ export const scopeClasses = scope => classes => Object.entries(
   return scopedClasses;
 }, {});
 
-export const processClasses = (classes = [], ensureClasses = [], scope = '') => flatten(classes)
-  .map(copyClasses)
-  .concat(flatten(ensureClasses).map(copyClasses))
-  .map(scopeClasses(scope));
+export const processClasses = (classes = [], ensureClasses = [], scope = '') => {
+  const allClasses = ensureArray(classes).concat(ensureArray(ensureClasses));
+  return flatten(allClasses).map(scopeClasses(scope));
+};
