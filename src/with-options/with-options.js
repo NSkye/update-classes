@@ -1,62 +1,11 @@
+import { ensureArray } from '../utils';
+import { afterEvent } from './after-event';
+import { processClasses } from './classes-helpers';
 import {
-  convertStringNotationToObject,
-  ensureArray,
-  flatten,
-} from './utils';
-
-const createOptions = () => ({
-  scope: '',
-  ensureTargets: [],
-  ensureClasses: [],
-});
-
-const copyClasses = classes => (
-  typeof classes === 'object'
-    ? { ...classes }
-    : classes
-);
-
-const scopeClasses = scope => classes => Object.entries(
-  typeof classes === 'string'
-    ? convertStringNotationToObject(classes)
-    : classes,
-).reduce((scopedClasses, [ className, action ]) => {
-  scopedClasses[String(scope) + String(className)] = action;
-  return scopedClasses;
-}, {});
-
-const processClasses = (classes, ensureClasses, scope) => flatten(
-  ensureArray(classes)
-    .concat(ensureClasses.map(copyClasses)),
-).map(scopeClasses(scope));
-
-const mergeOptions = (options1, options2) => ({
-  scope: options1.scope + options2.scope,
-  ensureTargets: options1.ensureTargets.concat(options2.ensureTargets),
-  ensureClasses: ([
-    ...flatten(options1.ensureClasses),
-    ...flatten(options2.ensureClasses),
-  ])
-    .map(copyClasses),
-});
-
-const copyOptions = options => ({
-  scope: options.scope,
-  ensureTargets: [ ...options.ensureTargets ],
-  ensureClasses: flatten(options.ensureClasses)
-    .map(copyClasses),
-});
-
-function afterEvent(eventName, targets, classes, updateClasses) {
-  const targetsArray = ensureArray(targets);
-
-  const updateOnEvent = ({ target }) => {
-    updateClasses(target, classes);
-    target.removeEventListener(eventName, updateOnEvent);
-  };
-
-  targetsArray.forEach(target => target.addEventListener(eventName, updateOnEvent));
-}
+  createOptions,
+  copyOptions,
+  mergeOptions,
+} from './options-helpers';
 
 export const withOptions = (updateClassesFunction, options) => {
   const updateClassesOriginal = updateClassesFunction.__extractOriginal
