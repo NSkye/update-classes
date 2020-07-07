@@ -1,13 +1,9 @@
-const recognizeAction = require('./recognize-action')
+import { recognizeAction } from './utils';
 
-const updateClassesWithObject = (targets, classes) => {
-  targets.forEach(({ classList }) => {
-    for (const className in classes) {
-      const action = classes[className]
-      const { method, args } = recognizeAction(action, className)
-      classList[method](...args)
-    }
-  })
-}
+export const updateClassesWithObject = (targets, classes) => {
+  const methods = Object.entries(classes)
+    .map(([ className, action ]) => recognizeAction(action, className));
 
-module.exports = updateClassesWithObject
+  targets
+    .forEach(({ classList }) => methods.forEach(({ method, args }) => classList[method](...args)));
+};

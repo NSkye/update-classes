@@ -1,17 +1,33 @@
-const updateClassesWithObject = require('./update-classes-with-object')
-const convertStringNotationToObject = require('./convert-string-notation-to-object')
-const ensureArray = require('./utils/ensure-array')
+import { updateClassesWithObject } from './update-classes-with-object';
+import { convertStringNotationToObject, ensureArray } from './utils';
 
-const updateClassesOriginal = (targets, classes) => {
-  targets = ensureArray(targets)
+export const updateClassesOriginal = (targets, classes) => {
+  const targetsArray = ensureArray(targets);
 
-  if (Array.isArray(classes)) {
-    classes.forEach(classCombination => updateClassesOriginal(targets, classCombination))
-  } else if (typeof classes === 'object') {
-    updateClassesWithObject(targets, classes)
-  } else {
-    updateClassesWithObject(targets, convertStringNotationToObject(String(classes)))
+  const classesNotation = (Array.isArray(classes) && 'array') || typeof classes;
+
+  const update = (({
+
+    array: () => classes.forEach(
+      classCombination => updateClassesOriginal(
+        targetsArray,
+        classCombination,
+      ),
+    ),
+
+    object: () => updateClassesWithObject(
+      targetsArray,
+      classes,
+    ),
+
+    string: () => updateClassesWithObject(
+      targetsArray,
+      convertStringNotationToObject(String(classes)),
+    ),
+
+  })[classesNotation]);
+
+  if (update) {
+    update();
   }
-}
-
-module.exports.updateClassesOriginal = updateClassesOriginal
+};

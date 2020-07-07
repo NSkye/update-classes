@@ -1,24 +1,24 @@
-type ITargetsToUpdate = Element | Element[]
+type ITargetsToUpdate = Element | Element[];
 
 declare namespace ClassesToUpdate {
   export interface IObjectNotation {
-    [classToUpdate: string]: boolean | string
-  }
-  export type IStringNotation = string
-  export type IArrayNotation = Array<IObjectNotation | IStringNotation | IArrayNotation>
-  export type IAnyNotation = IObjectNotation | IStringNotation | IArrayNotation
-}
+    [classToUpdate: string]: boolean | string;
+  };
+  export type IStringNotation = string;
+  export type IArrayNotation = Array<IObjectNotation | IStringNotation | IArrayNotation>;
+  export type IAnyNotation = IObjectNotation | IStringNotation | IArrayNotation;
+};
 
 interface IUpdateClassesReturn {
   and: IUpdateClasses;
   also: IUpdateClasses;
   afterTransition: (
     classes: ClassesToUpdate.IAnyNotation
-  ) => IUpdateClassesReturn,
+  ) => IUpdateClassesReturn;
   afterAnimation: (
     classes: ClassesToUpdate.IAnyNotation
-  ) => IUpdateClassesReturn
-}
+  ) => IUpdateClassesReturn;
+};
 
 interface IOptions {
   scope: string;
@@ -26,8 +26,8 @@ interface IOptions {
   ensureClasses: Array<
     ClassesToUpdate.IStringNotation |
     ClassesToUpdate.IObjectNotation
-  >
-}
+  >;
+};
 
 interface IUpdateClasses {
   (
@@ -40,8 +40,8 @@ interface IUpdateClasses {
   classes: (classes: ClassesToUpdate.IAnyNotation) => IUpdateClasses;
   __extractOriginal: () => (targets: ITargetsToUpdate, classes: ClassesToUpdate.IAnyNotation) => void;
   __extractOptions: () => IOptions;
-}
+};
 
-declare const updateClasses: IUpdateClasses
+declare const updateClasses: IUpdateClasses;
 
-export default updateClasses
+export default updateClasses;

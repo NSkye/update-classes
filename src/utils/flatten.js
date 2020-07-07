@@ -1,14 +1,14 @@
-const ensureArray = require('./ensure-array')
+import { ensureArray } from './ensure-array';
 
-module.exports = array => {
-  array = ensureArray(array)
-  const result = []
-  const throughArray = array => array.forEach(element => {
+export const flatten = input => {
+  const originalArray = ensureArray(input);
+  const resultArray = [];
+  const throughArray = subArray => subArray.forEach(element => {
     if (Array.isArray(element)) {
-      throughArray(element)
+      throughArray(element);
     }
-    result.push(element)
-  })
-  throughArray(array)
-  return result
-}
+    resultArray.push(element);
+  });
+  throughArray(originalArray);
+  return resultArray;
+};
