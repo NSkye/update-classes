@@ -6,7 +6,7 @@
   <img src="https://img.shields.io/npm/dt/update-classes">
 </p>  
 
-# update-classes
+<h1 align="center">update-classes</h1>  
 
 A simple JavaScript utility for updating DOM-element's classlist  
   
