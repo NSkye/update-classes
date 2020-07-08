@@ -1,5 +1,5 @@
 # update-classes
-[![CircleCI](https://circleci.com/gh/NSkye/update-classes.svg?style=shield)](https://circleci.com/gh/NSkye/update-classes) ![npm](https://img.shields.io/npm/v/update-classes) ![npm bundle size](https://img.shields.io/bundlephobia/min/update-classes) ![npm](https://img.shields.io/npm/dt/update-classes)
+[![CircleCI](https://circleci.com/gh/NSkye/update-classes.svg?style=shield)](https://circleci.com/gh/NSkye/update-classes) ![npm](https://img.shields.io/npm/v/update-classes) ![npm bundle size](https://img.shields.io/bundlephobia/min/update-classes) ![typescript](https://img.shields.io/badge/typescript-%3E%3D3.7-informational) ![npm](https://img.shields.io/npm/dt/update-classes)
 
 A simple JavaScript utility for updating DOM-element's classlist  
   
