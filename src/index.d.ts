@@ -51,14 +51,14 @@ interface IUpdateClasses {
     ignoreScope?: boolean,
   ): IUpdateClassesReturn;
 
-  scope: (scopeName: string) => IUpdateClasses;
-  target: (target: ITargetsToUpdate) => IUpdateClasses;
-  classes: (classes: ClassesToUpdate.IAnyNotation) => IUpdateClasses;
-  __extractOriginal: () => (
+  readonly scope: (scopeName: string) => IUpdateClasses;
+  readonly target: (target: ITargetsToUpdate) => IUpdateClasses;
+  readonly classes: (classes: ClassesToUpdate.IAnyNotation) => IUpdateClasses;
+  readonly __extractOriginal: () => (
     targets: ITargetsToUpdate,
     classes: ClassesToUpdate.IAnyNotation,
   ) => void;
-  __extractOptions: () => IOptions;
+  readonly __extractOptions: () => IOptions;
 }
 
 declare const updateClasses: IUpdateClasses;
