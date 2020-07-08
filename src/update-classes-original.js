@@ -4,25 +4,30 @@ import { convertStringNotationToObject, ensureArray } from './utils';
 export const updateClassesOriginal = (targets, classes) => {
   const targetsArray = ensureArray(targets);
 
-  const classesNotation = (Array.isArray(classes) && 'array') || typeof classes;
+  const classesNotation = `${(Array.isArray(classes) && 'array') || typeof classes}Notation`;
 
   const update = (({
 
-    array: () => classes.forEach(
+    arrayNotation: () => classes.forEach(
       classCombination => updateClassesOriginal(
         targetsArray,
         classCombination,
       ),
     ),
 
-    object: () => updateClassesWithObject(
+    objectNotation: () => updateClassesWithObject(
       targetsArray,
       classes,
     ),
 
-    string: () => updateClassesWithObject(
+    stringNotation: () => updateClassesWithObject(
       targetsArray,
       convertStringNotationToObject(String(classes)),
+    ),
+
+    functionNotation: () => updateClassesOriginal(
+      targetsArray,
+      classes(),
     ),
 
   })[classesNotation]);

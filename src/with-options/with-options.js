@@ -18,30 +18,44 @@ export const withOptions = (updateClassesFunction, options) => {
     ? mergeOptions(updateClassesFunction.__extractOptions(), previousOptions)
     : previousOptions;
 
-  const updateClassesWithOptions = (targets, classes) => {
+  const updateClassesWithOptions = (targets, classes, ignoreScope = false) => {
+    const currentScope = !ignoreScope
+      ? currentOptions.scope
+      : '';
+
     const currentTargets = ensureArray(targets || [])
       .concat(currentOptions.ensureTargets);
 
     const currentClasses = processClasses(
       classes || [],
       currentOptions.ensureClasses,
-      currentOptions.scope,
+      currentScope,
     );
 
     updateClassesOriginal(currentTargets, currentClasses);
     return {
       and: updateClassesWithOptions,
       also: updateClassesWithOptions,
-      afterTransition: additionalClasses => afterEvent('transitionend', currentTargets, processClasses(
-        additionalClasses,
-        currentOptions.ensureClasses,
-        currentOptions.scope,
-      ), updateClassesOriginal),
-      afterAnimation: additionalClasses => afterEvent('animationend', currentTargets, processClasses(
-        additionalClasses,
-        currentOptions.ensureClasses,
-        currentOptions.scope,
-      ), updateClassesOriginal),
+      afterTransition: (additionalClasses, shouldIgnoreScope = false) => afterEvent(
+        'transitionend',
+        currentTargets,
+        processClasses(
+          additionalClasses,
+          currentOptions.ensureClasses,
+          shouldIgnoreScope ? '' : currentOptions.scope,
+        ),
+        updateClassesOriginal,
+      ),
+      afterAnimation: (additionalClasses, shouldIgnoreScope = false) => afterEvent(
+        'animationend',
+        currentTargets,
+        processClasses(
+          additionalClasses,
+          currentOptions.ensureClasses,
+          shouldIgnoreScope ? '' : currentOptions.scope,
+        ),
+        updateClassesOriginal,
+      ),
     };
   };
 

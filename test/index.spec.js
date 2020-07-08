@@ -174,6 +174,27 @@ describe('Update classes with an array notation', () => {
   });
 });
 
+describe('Update classes with function notation', () => {
+  test('Update classes on multiple elements with mixed notations', () => {
+    const classesToRemove = ['c1', 'c2', 'c3', 'c4'];
+    const classesToAdd = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6'];
+    const classesToRemainUntouched = ['c5', 'c6'];
+
+    updateClasses([mockHTMLElement1, mockHTMLElement2], () => [
+      '!c1 !c2 a1 a2',
+      { c3: 'a3', c4: false, a4: true },
+      ['a5', { a6: true }],
+    ]);
+
+    classesToRemove.forEach(expect(mockHTMLElement1.classList).not.toContain);
+    classesToRemove.forEach(expect(mockHTMLElement2.classList).not.toContain);
+    classesToAdd.forEach(expect(mockHTMLElement1.classList).toContain);
+    classesToAdd.forEach(expect(mockHTMLElement2.classList).toContain);
+    classesToRemainUntouched.forEach(expect(mockHTMLElement1.classList).toContain);
+    classesToRemainUntouched.forEach(expect(mockHTMLElement2.classList).toContain);
+  })
+})
+
 describe('Call chaining', () => {
   test('Chain updateClasses calls with "also" method', () => {
     updateClasses(mockHTMLElement1, '!c1 r1')
@@ -212,6 +233,9 @@ describe('Advanced chaining', () => {
 
     updateFoo(mockHTMLElement, 'c9');
     expect(mockHTMLElement.classList).toContain('foo__c9');
+
+    updateFoo(mockHTMLElement, 'c10', true);
+    expect(mockHTMLElement.classList).toContain('c10');
   });
 
   test('Targets & classes', () => {
@@ -256,6 +280,32 @@ describe('Advanced chaining', () => {
     expect(mockHTMLElement1.classList).toContain('my-block--foo');
     expect(mockHTMLElement1.classList).toContain('my-block--bar');
   });
+
+  test('With function notation', () => {
+    let classesToRemove = [ 'c1', 'c2' ];
+    let classesToAdd = [ 'r1', 'r2' ];
+
+    const updateElementClasses = updateClasses
+      .target(mockHTMLElement)
+      .classes(() => ({
+        c1: classesToAdd.includes('c1'),
+        c2: classesToAdd.includes('c2'),
+        r1: classesToAdd.includes('r1'),
+        r2: classesToAdd.includes('r2'),
+      }));
+
+    updateElementClasses();
+
+    classesToAdd.forEach(expect(mockHTMLElement.classList).toContain);
+    classesToRemove.forEach(expect(mockHTMLElement.classList).not.toContain);
+
+    [ classesToRemove, classesToAdd ] = [ classesToAdd, classesToRemove ]
+
+    updateElementClasses();
+
+    classesToAdd.forEach(expect(mockHTMLElement.classList).toContain);
+    classesToRemove.forEach(expect(mockHTMLElement.classList).not.toContain);
+  })
 });
 
 describe('Animation and transition handling', () => {

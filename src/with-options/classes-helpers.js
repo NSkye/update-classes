@@ -15,7 +15,24 @@ export const scopeClasses = scope => classes => Object.entries(
   return scopedClasses;
 }, {});
 
+export const flattenClasses = classes => {
+  let hadFunctions = false;
+
+  const flattenedClasses = flatten(classes)
+    .map(classCombination => {
+      if (typeof classCombination === 'function') {
+        hadFunctions = true;
+        return classCombination();
+      }
+      return classCombination;
+    });
+
+  return hadFunctions
+    ? flattenClasses(flattenedClasses)
+    : flattenedClasses;
+};
+
 export const processClasses = (classes = [], ensureClasses = [], scope = '') => {
   const allClasses = ensureArray(classes).concat(ensureArray(ensureClasses));
-  return flatten(allClasses).map(scopeClasses(scope));
+  return flattenClasses(allClasses).map(scopeClasses(scope));
 };

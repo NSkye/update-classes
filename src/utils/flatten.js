@@ -6,6 +6,7 @@ export const flatten = input => {
   const throughArray = subArray => subArray.forEach(element => {
     if (Array.isArray(element)) {
       throughArray(element);
+      return;
     }
     resultArray.push(element);
   });
