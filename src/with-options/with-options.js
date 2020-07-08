@@ -7,6 +7,34 @@ import {
   mergeOptions,
 } from './options-helpers';
 
+const isTarget = passedInput => {
+  const [ input ] = ensureArray(passedInput);
+
+  return typeof input !== 'boolean'
+    && (!input || input instanceof Element);
+};
+
+const processArguments = args => {
+  const [
+    firstArgument,
+    secondArgument,
+    thirdArgument,
+  ] = args;
+
+  if (args.length >= 3 || isTarget(firstArgument)) {
+    return {
+      targets: firstArgument,
+      classes: secondArgument,
+      ignoreScope: thirdArgument,
+    };
+  }
+
+  return {
+    classes: firstArgument,
+    ignoreScope: secondArgument,
+  };
+};
+
 export const withOptions = (updateClassesFunction, options) => {
   const updateClassesOriginal = updateClassesFunction.__extractOriginal
     ? updateClassesFunction.__extractOriginal()
@@ -18,7 +46,13 @@ export const withOptions = (updateClassesFunction, options) => {
     ? mergeOptions(updateClassesFunction.__extractOptions(), previousOptions)
     : previousOptions;
 
-  const updateClassesWithOptions = (targets, classes, ignoreScope = false) => {
+  const updateClassesWithOptions = (...args) => {
+    const {
+      targets,
+      classes,
+      ignoreScope = false,
+    } = processArguments(args);
+
     const currentScope = !ignoreScope
       ? currentOptions.scope
       : '';

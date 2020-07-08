@@ -241,7 +241,7 @@ describe('Advanced chaining', () => {
   test('Targets & classes', () => {
     const updateMockElement = updateClasses
       .target(mockHTMLElement);
-    updateMockElement(null, 'c7');
+    updateMockElement('c7');
     expect(mockHTMLElement.classList).toContain('c7');
 
     const updateMockElementC7 = updateMockElement
@@ -251,7 +251,7 @@ describe('Advanced chaining', () => {
     updateMockElementC7();
     expect(mockHTMLElement.classList).toContain('c7');
 
-    updateMockElement(null, 'c8');
+    updateMockElement('c8');
     expect(mockHTMLElement.classList).toContain('c7');
     expect(mockHTMLElement.classList).toContain('c8');
   });
@@ -273,8 +273,8 @@ describe('Advanced chaining', () => {
       .classes('active');
 
     updateMyCertainBlockModifier()
-      .also(null, 'foo')
-      .also(null, 'bar');
+      .also('foo')
+      .also('bar');
 
     expect(mockHTMLElement1.classList).toContain('my-block--active');
     expect(mockHTMLElement1.classList).toContain('my-block--foo');

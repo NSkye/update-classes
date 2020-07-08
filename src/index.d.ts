@@ -42,6 +42,15 @@ interface IUpdateClasses {
     ignoreScope?: boolean,
   ): IUpdateClassesReturn;
 
+  (
+    classes?: ClassesToUpdate.IAnyNotation,
+    ignoreScope?: boolean,
+  ): IUpdateClassesReturn;
+
+  (
+    ignoreScope?: boolean,
+  ): IUpdateClassesReturn;
+
   scope: (scopeName: string) => IUpdateClasses;
   target: (target: ITargetsToUpdate) => IUpdateClasses;
   classes: (classes: ClassesToUpdate.IAnyNotation) => IUpdateClasses;
