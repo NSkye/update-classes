@@ -1,23 +1,29 @@
-type ITargetsToUpdate = Element | Element[]
+type ITargetsToUpdate = Element | Element[];
 
 declare namespace ClassesToUpdate {
   export interface IObjectNotation {
-    [classToUpdate: string]: boolean | string
+    [classToUpdate: string]: boolean | string;
   }
   export type IStringNotation = string
-  export type IArrayNotation = Array<IObjectNotation | IStringNotation | IArrayNotation>
-  export type IAnyNotation = IObjectNotation | IStringNotation | IArrayNotation
+  export type IArrayNotation = Array<IAnyNotation>
+  export type IFunctionNotation = () => IAnyNotation
+  export type IAnyNotation = IObjectNotation |
+    IStringNotation |
+    IArrayNotation |
+    IFunctionNotation
 }
 
 interface IUpdateClassesReturn {
   and: IUpdateClasses;
   also: IUpdateClasses;
   afterTransition: (
-    classes: ClassesToUpdate.IAnyNotation
-  ) => IUpdateClassesReturn,
+    classes: ClassesToUpdate.IAnyNotation,
+    ignoreScope?: boolean,
+  ) => IUpdateClassesReturn;
   afterAnimation: (
-    classes: ClassesToUpdate.IAnyNotation
-  ) => IUpdateClassesReturn
+    classes: ClassesToUpdate.IAnyNotation,
+    ignoreScope?: boolean,
+  ) => IUpdateClassesReturn;
 }
 
 interface IOptions {
@@ -26,22 +32,35 @@ interface IOptions {
   ensureClasses: Array<
     ClassesToUpdate.IStringNotation |
     ClassesToUpdate.IObjectNotation
-  >
+  >;
 }
 
 interface IUpdateClasses {
   (
     targets?: ITargetsToUpdate,
-    classes?: ClassesToUpdate.IAnyNotation
+    classes?: ClassesToUpdate.IAnyNotation,
+    ignoreScope?: boolean,
   ): IUpdateClassesReturn;
 
-  scope: (scopeName: string) => IUpdateClasses;
-  target: (target: ITargetsToUpdate) => IUpdateClasses;
-  classes: (classes: ClassesToUpdate.IAnyNotation) => IUpdateClasses;
-  __extractOriginal: () => (targets: ITargetsToUpdate, classes: ClassesToUpdate.IAnyNotation) => void;
-  __extractOptions: () => IOptions;
+  (
+    classes?: ClassesToUpdate.IAnyNotation,
+    ignoreScope?: boolean,
+  ): IUpdateClassesReturn;
+
+  (
+    ignoreScope?: boolean,
+  ): IUpdateClassesReturn;
+
+  readonly scope: (scopeName: string) => IUpdateClasses;
+  readonly target: (target: ITargetsToUpdate) => IUpdateClasses;
+  readonly classes: (classes: ClassesToUpdate.IAnyNotation) => IUpdateClasses;
+  readonly __extractOriginal: () => (
+    targets: ITargetsToUpdate,
+    classes: ClassesToUpdate.IAnyNotation,
+  ) => void;
+  readonly __extractOptions: () => IOptions;
 }
 
-declare const updateClasses: IUpdateClasses
+declare const updateClasses: IUpdateClasses;
 
-export default updateClasses
+export default updateClasses;

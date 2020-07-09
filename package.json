@@ -13,6 +13,13 @@
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
     "babel-loader": "^8.1.0",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-loader": "^4.0.2",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.3",
+    "eslint-plugin-react-hooks": "^4.0.0",
     "jest": "^26.0.1",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11"
@@ -21,6 +28,8 @@
     "build": "npm run build:prod && npm run build:dev",
     "build:prod": "NODE_ENV=production webpack",
     "build:dev": "NODE_ENV=development webpack",
+    "lint": "eslint src/**.js",
+    "lint:fix": "eslint src/**.js --fix",
     "test": "jest --testPathPattern /test/.*\\.spec\\.js",
     "test:coverage": "jest --testPathPattern /test/.*\\.spec\\.js --collectCoverage=true"
   },

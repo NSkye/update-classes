@@ -1,3 +1,3 @@
-module.exports = (value) => Array.isArray(value)
+export const ensureArray = value => (Array.isArray(value)
   ? value
-  : [value]
+  : [ value ]);

@@ -1,4 +1,4 @@
-const { updateClassesOriginal } = require('./update-classes-original')
-const { withOptions, createOptions } = require('./options')
+import { updateClassesOriginal } from './update-classes-original';
+import { withOptions } from './with-options';
 
-module.exports = withOptions(updateClassesOriginal, createOptions())
+export default withOptions(updateClassesOriginal);
